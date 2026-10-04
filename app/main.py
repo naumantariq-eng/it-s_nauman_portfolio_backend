@@ -51,6 +51,15 @@ app.include_router(api_router)
 
 
 @app.get("/", tags=["Root"])
+def root():
+    return {
+        "status": "online",
+        "service": "Nauman Tariq Portfolio API",
+        "docs": "/docs",
+        "message": "Backend is running live on Railway!",
+    }
+
+
 @app.get("/health", tags=["Health Check"])
 @app.get("/api/health", tags=["Health Check"])
 def health_check():
@@ -61,14 +70,8 @@ def health_check():
         "version": settings.VERSION,
         "docs": "/docs",
         "environment": settings.ENVIRONMENT,
-        "message": "Nauman Tariq Portfolio API is running live on Railway!",
+        "message": "Backend is running live on Railway!",
     }
-
-
-# Mount Frontend files (HTML, CSS, JS, Images) so the site can be visited directly at http://127.0.0.1:8000/
-frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend")
-if os.path.isdir(frontend_dir):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
 
 # Global Exception Handler to avoid leaking internal tracebacks
