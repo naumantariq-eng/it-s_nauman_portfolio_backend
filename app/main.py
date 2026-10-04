@@ -50,6 +50,7 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 app.include_router(api_router)
 
 
+@app.get("/", tags=["Root"])
 @app.get("/health", tags=["Health Check"])
 @app.get("/api/health", tags=["Health Check"])
 def health_check():
@@ -60,6 +61,7 @@ def health_check():
         "version": settings.VERSION,
         "docs": "/docs",
         "environment": settings.ENVIRONMENT,
+        "message": "Nauman Tariq Portfolio API is running live on Railway!",
     }
 
 
