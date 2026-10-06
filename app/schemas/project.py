@@ -48,6 +48,7 @@ class ProjectResponse(BaseModel):
     github_url: str
     category_id: int
     category_name: Optional[str] = None
+    category_slug: Optional[str] = None
     tech_stack: List[str] = []
     created_at: datetime
     updated_at: datetime

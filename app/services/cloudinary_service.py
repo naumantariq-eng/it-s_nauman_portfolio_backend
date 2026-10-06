@@ -4,6 +4,7 @@ import uuid
 from typing import Optional
 import cloudinary
 import cloudinary.uploader
+import io
 from fastapi import HTTPException, status
 from app.core.config import settings
 
@@ -35,7 +36,11 @@ def save_local_upload(file_bytes: bytes, filename: str) -> str:
     with open(target_path, "wb") as f:
         f.write(file_bytes)
 
-    return f"http://127.0.0.1:8000/static/uploads/{unique_name}"
+    # Try to dynamically use railway URL if in production
+    is_prod = settings.ENVIRONMENT.lower() == "production"
+    base_url = "https://it-snaumanportfoliobackend-production.up.railway.app" if is_prod else "http://127.0.0.1:8000"
+    
+    return f"{base_url}/static/uploads/{unique_name}"
 
 
 def upload_project_image(file_bytes: bytes, filename: str, content_type: str) -> str:
@@ -63,7 +68,7 @@ def upload_project_image(file_bytes: bytes, filename: str, content_type: str) ->
         try:
             unique_filename = f"proj_{uuid.uuid4().hex[:10]}"
             upload_result = cloudinary.uploader.upload(
-                file_bytes,
+                io.BytesIO(file_bytes),
                 folder="portfolio_projects",
                 public_id=unique_filename,
                 resource_type="image",

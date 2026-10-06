@@ -21,6 +21,7 @@ def format_project_response(project: Project) -> ProjectResponse:
         github_url=project.github_url,
         category_id=project.category_id,
         category_name=project.category.name if project.category else None,
+        category_slug=project.category.slug if project.category else None,
         tech_stack=project.tech_stack or [],
         created_at=project.created_at,
         updated_at=project.updated_at,
